@@ -39,7 +39,7 @@
 - complex to refactor and required major code modification to better take advantage of cloud-based features 
 - serverless architecture, consumed less and scale up as needed
 
-![](/Images/option1-refactoring.png)
+![](/Images/option2-refactoring.png)
 
 ### Resources
 1. `Azure Public DNS` for app.com
