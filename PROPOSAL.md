@@ -53,7 +53,7 @@
 - redirect https://app.com/api/ to Azure Function B
 - request throttling
 - endpoint protection
-5. Azure Function
+5. `Azure Function`
 - Azure Function A to authenticate user to SignalR services
 - Azure Function B to send messages to connected client
 6. `Azure SignalR Services`
