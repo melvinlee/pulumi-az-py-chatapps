@@ -21,7 +21,7 @@ source launch.config
 
 5. Export Azure variables (Azure backend requires setting the environment variables AZURE_STORAGE_ACCOUNT and either AZURE_STORAGE_KEY)
 ```sh
-az storage account keys list-g $RESOURCEGROUP -n $STORAGE_ACCOUNT
+az storage account keys list -g $AZURE_RESOURCEGROUP -n $AZURE_STORAGE_ACCOUNT
 
 export AZURE_STORAGE_KEY=<storage key>
 ```
