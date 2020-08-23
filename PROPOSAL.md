@@ -1,15 +1,26 @@
-# Proposed Options
+# Proposed Solution
 
-1. Replatform
-2. Refactoring
+## Assumption
+- Node.js app will be performing authentication and authorisation
+- The proposed solution must be cost effective
+- The proposed solution required minimun effort to setup and maintained
+- The proposed solution need to support web socket for real time communication and keep alive
+
+## Options
+
+1.Replatform
+- minor code modification, example modify the way the app interacts with the database 
+- cost-efficient solution, start small and scale up as needed
+- new features can be added during replatforming to enable better scaling
+
+2.Refactoring
 
 
 ## Replatform
 
-### PaaS Resources
-
 ![](/Images/option1-replatform.png)
 
+### Resources
 1. `Azure Public DNS` for app.com
 2. `Azure WAF`
 - Path-based routing and Layer 7 firewall
