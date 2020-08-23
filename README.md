@@ -28,5 +28,5 @@ export AZURE_STORAGE_KEY=<storage key>
 
 6. Login with Pulumi to Azure Storage
 ```sh 
-pulumi login --cloud-url azblob://$AZURE_STORAGE_ACCOUNT
+pulumi login --cloud-url azblob://statescontainer
 ```
