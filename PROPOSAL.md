@@ -23,3 +23,4 @@
 5. `Azure Container Registry` hosting node.js container image
 6. `Azure Redis Cache` keeps clients connectivity state
 7. `Azuere MySQL` keeps user accounts
+8. `Azure Monitor` for Azure resources and application monitoring
