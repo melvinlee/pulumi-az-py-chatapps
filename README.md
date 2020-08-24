@@ -30,15 +30,3 @@ export AZURE_STORAGE_KEY=<storage key>
 ```sh 
 pulumi login --cloud-url azblob://statescontainer
 ```
-
-7. Initialiase stack
-```sh
-pulumi stack init 
-```
-
-8. Create Python venv and install dependencies:
-```sh
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
-```
