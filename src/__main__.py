@@ -5,6 +5,8 @@ import base
 import storage
 import vnet 
 import waf 
+import signalr
+import zone
 
 # Read local config settings
 config = pulumi.Config()
@@ -17,6 +19,8 @@ vnet_subnet_frontend_cidr= vnet_config.get("subnet_frontend_cidr")
 vnet_subnet_backend_cidr= vnet_config.get("subnet_backend_cidr")
 
 waf_name = config.require("waf-name")
+signalr_name = config.require("signalr-name")
+zone_name =  config.require("zone-name")
 
 tags = {
     "project" : "chatapps",
@@ -35,6 +39,13 @@ my_website = storage.StaticWebsite('website',rg.name, tags)
 # Create Azure Application Gateway
 my_waf = waf.ApplicationGateway(waf_name, rg.name, my_vnet.frontend_subnet_id, my_vnet.backend_subnet_id, my_website.host, tags)
 
+# Create a Public Zone
+my_publicZone = zone.PublicDNS(zone_name, rg.name, my_waf.waf_pip_id, tags)
+
+# Create SignalR Services
+my_signalr = signalr.Service( signalr_name, rg.name, tags)
+
 # Export Variables
-pulumi.export('website_url', my_website.url)
-pulumi.export('website_host', my_website.host)
+pulumi.export('website_url', "http://www." + zone_name)
+pulumi.export("signalr_connection_string", my_signalr.primary_connection_string)
+pulumi.export("signalr_public_port", my_signalr.public_port)
