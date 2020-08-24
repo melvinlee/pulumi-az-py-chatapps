@@ -1,0 +1,5 @@
+encryptionsalt: v1:40rTt/9YmKI=:v1:nDiHrZ705WZQHv1Y:RiEocxFkZbhmnxORQW/m2Xu4pTvH/g==
+config:
+  azure:environment: public
+  azure:location: SoutheastAsia
+  chatapp:resource-group-name: chatapps-rg
