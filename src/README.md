@@ -21,6 +21,7 @@ pip3 install -r requirements.txt
 ```sh
 pulumi config set resource-group-name chatapps-rg
 pulumi config set zone-name app.com
+pulumi config set pip-name chatapps-pip
 pulumi config set --path 'vnet.name' chatapp-vnet
 pulumi config set --path 'vnet.cidr' 10.0.0.0/16
 pulumi config set --path 'vnet.subnet_frontend_cidr' 10.0.0.0/27

@@ -4,20 +4,8 @@ from pulumi_azure import network
 class ApplicationGateway:
     """Create Azure ApplicationGateway"""
 
-    waf_pip_id = None
+    def __init__(self, name, resource_group_name, pip_id, subnet_frontend_id, subnet_backend_id, website_host, tags):
 
-    def __init__(self, name, resource_group_name, subnet_frontend_id, subnet_backend_id, website_host, tags):
-
-        pip_name = name + "-pip"
-        public_ip = network.PublicIp(pip_name,
-                                     resource_group_name=resource_group_name,
-                                     sku="Standard",  # Standard SKU to support standard tier Application Gateways
-                                     allocation_method="Static")
-
-        self.waf_pip_id = public_ip.id
-
-
-        # backend_address_pool_name = name + "-beap"
         web_backend_address_pool_name = name + "-web-beap"
         frontend_port_name = name + "feport"
         frontend_ip_configuration_name = name + "feip"
@@ -50,7 +38,7 @@ class ApplicationGateway:
                                          }],
                                          frontend_ip_configurations=[{
                                              "name": frontend_ip_configuration_name,
-                                             "public_ip_address_id": public_ip.id,
+                                             "public_ip_address_id": pip_id,
                                          }],
                                          backend_address_pools=[{
                                              "name": web_backend_address_pool_name,

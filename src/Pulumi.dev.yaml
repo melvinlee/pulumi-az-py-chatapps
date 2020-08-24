@@ -2,11 +2,12 @@ encryptionsalt: v1:40rTt/9YmKI=:v1:nDiHrZ705WZQHv1Y:RiEocxFkZbhmnxORQW/m2Xu4pTvH
 config:
   azure:environment: public
   azure:location: SoutheastAsia
+  chatapp:pip-name: chatapps-pip
   chatapp:resource-group-name: chatapps-rg
   chatapp:signalr-name: chatapps-signalr
   chatapp:vnet:
     cidr: 10.0.0.0/16
-    name: chatapp-vnet
+    name: chatapps-vnet
     subnet_backend_cidr: 10.0.1.0/27
     subnet_frontend_cidr: 10.0.0.0/27
   chatapp:waf-name: chatapps-waf

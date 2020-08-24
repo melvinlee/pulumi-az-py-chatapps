@@ -1,12 +1,7 @@
 """An Azure Python Pulumi program"""
 
 import pulumi
-import base
-import storage
-import vnet 
-import waf 
-import signalr
-import zone
+import base, storage, vnet, waf, signalr, zone, pip
 
 # Read local config settings
 config = pulumi.Config()
@@ -20,6 +15,7 @@ vnet_subnet_backend_cidr= vnet_config.get("subnet_backend_cidr")
 
 waf_name = config.require("waf-name")
 signalr_name = config.require("signalr-name")
+pip_name = config.require("pip-name")
 zone_name =  config.require("zone-name")
 
 tags = {
@@ -36,11 +32,14 @@ my_vnet = vnet.VirtualNetwork(vnet_name, rg.name, vnet_cidr, vnet_subnet_fronten
 # Create Azure Blob Static Website
 my_website = storage.StaticWebsite('website',rg.name, tags)
 
-# Create Azure Application Gateway
-my_waf = waf.ApplicationGateway(waf_name, rg.name, my_vnet.frontend_subnet_id, my_vnet.backend_subnet_id, my_website.host, tags)
+# Create an Azure Standard Public IP
+my_pip = pip.StandrdPublicIP(pip_name, rg.name, tags)
 
 # Create a Public Zone
-my_publicZone = zone.PublicDNS(zone_name, rg.name, my_waf.waf_pip_id, tags)
+my_zone = zone.PublicDNS(zone_name, rg.name, my_pip.public_ip_id ,tags)
+
+# Create Azure Application Gateway
+my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet_id, my_vnet.backend_subnet_id, my_website.host, tags)
 
 # Create SignalR Services
 my_signalr = signalr.Service( signalr_name, rg.name, tags)
