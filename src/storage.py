@@ -11,13 +11,14 @@ class StaticWebsite:
 
         account = storage.Account(name,
                                   resource_group_name=resource_group_name,
-                                  account_tier='Standard',
-                                  account_kind='StorageV2',
-                                  account_replication_type='LRS',
+                                  account_tier="Standard",
+                                  account_kind="StorageV2",
+                                  account_replication_type="LRS",
                                   static_website={
                                       "indexDocument": "index.html",
                                       "error404Document": "error.html"
                                   },
+                                  enable_https_traffic_only=False,
                                   tags=tags)
 
         storage.Blob("index.html",

@@ -4,6 +4,7 @@ import pulumi
 import base
 import storage
 import vnet 
+import waf 
 
 # Read local config settings
 config = pulumi.Config()
@@ -14,6 +15,8 @@ vnet_name = vnet_config.get("name")
 vnet_cidr = vnet_config.get("cidr")
 vnet_subnet_frontend_cidr= vnet_config.get("subnet_frontend_cidr")
 vnet_subnet_backend_cidr= vnet_config.get("subnet_backend_cidr")
+
+waf_name = config.require("waf-name")
 
 tags = {
     "project" : "chatapps",
@@ -29,5 +32,9 @@ my_vnet = vnet.VirtualNetwork(vnet_name, rg.name, vnet_cidr, vnet_subnet_fronten
 # Create Azure Blob Static Website
 my_website = storage.StaticWebsite('website',rg.name, tags)
 
+# Create Azure Application Gateway
+my_waf = waf.ApplicationGateway(waf_name, rg.name, my_vnet.frontend_subnet_id, my_vnet.backend_subnet_id, my_website.host, tags)
+
 # Export Variables
 pulumi.export('website_url', my_website.url)
+pulumi.export('website_host', my_website.host)
