@@ -3,3 +3,8 @@ config:
   azure:environment: public
   azure:location: SoutheastAsia
   chatapp:resource-group-name: chatapps-rg
+  chatapp:vnet:
+    cidr: 10.0.0.0/16
+    name: chatapp-vnet
+    subnet_backend_cidr: 10.0.1.0/27
+    subnet_frontend_cidr: 10.0.0.0/27

@@ -16,6 +16,10 @@ pip3 install -r requirements.txt
 
 ```sh
 pulumi config set resource-group-name chatapps-rg
+pulumi config set --path 'vnet.name' chatapp-vnet
+pulumi config set --path 'vnet.cidr' 10.0.0.0/16
+pulumi config set --path 'vnet.subnet_frontend_cidr' 10.0.0.0/27
+pulumi config set --path 'vnet.subnet_backend_cidr' 10.0.1.0/27
 ```
 
 4. Let’s go ahead and deploy the stack
