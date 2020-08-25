@@ -1,6 +1,6 @@
 # Introduction 
 
-This repo contains code of using Pulumi to build and deploy cloud applications and infrastructure based on the proposed option 2 as described [here](../PROPOSAL.md) 
+This repo contains code of using Pulumi to build and deploy cloud applications and infrastructure based on the proposed option 2 as described [here](../doc/PROPOSAL.md) 
 
 ## Quick Start
 
