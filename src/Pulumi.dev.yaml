@@ -2,6 +2,7 @@ encryptionsalt: v1:40rTt/9YmKI=:v1:nDiHrZ705WZQHv1Y:RiEocxFkZbhmnxORQW/m2Xu4pTvH
 config:
   azure:environment: public
   azure:location: SoutheastAsia
+  chatapp:la-name: chatapps-la
   chatapp:pip-name: chatapps-pip
   chatapp:resource-group-name: chatapps-rg
   chatapp:signalr-name: chatapps-signalr

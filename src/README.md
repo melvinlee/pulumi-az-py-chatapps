@@ -28,6 +28,7 @@ pulumi config set --path 'vnet.subnet_frontend_cidr' 10.0.0.0/27
 pulumi config set --path 'vnet.subnet_backend_cidr' 10.0.1.0/27
 pulumi config set waf-name chatapps-waf
 pulumi config set signalr-name chatapps-signalr
+pulumi config set la-name chatapps-la
 ```
 
 4. Let’s go ahead and deploy the stack

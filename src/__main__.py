@@ -1,7 +1,7 @@
 """An Azure Python Pulumi program"""
 
 import pulumi
-import base, storage, vnet, waf, signalr, zone, pip
+import base, storage, vnet, waf, signalr, zone, pip, monitoring
 
 # Read local config settings
 config = pulumi.Config()
@@ -17,6 +17,7 @@ waf_name = config.require("waf-name")
 signalr_name = config.require("signalr-name")
 pip_name = config.require("pip-name")
 zone_name =  config.require("zone-name")
+la_name = config.require("la-name")
 
 tags = {
     "project" : "chatapps",
@@ -25,6 +26,9 @@ tags = {
 
 # Create an Azure Resource Group
 rg = base.ResourceGroup(resource_group_name, tags)
+
+# Create an Azure Loganalytics Workspace
+my_laworkspace = monitoring.AnalyticsWorkspace(la_name, rg.name, tags)
 
 # Create a VirtualNetwork
 my_vnet = vnet.VirtualNetwork(vnet_name, rg.name, vnet_cidr, vnet_subnet_frontend_cidr, vnet_subnet_backend_cidr, tags)
