@@ -33,7 +33,7 @@ pulumi config set la-name chatapps-la
 pulumi config set --path 'apim.name' chatapps-apim
 pulumi config set --path 'apim.publisher_name' app-developer
 pulumi config set --path 'apim.publisher_email' chat@app.com
-pulumi config set cost-center 882233 
+pulumi config set cost-center 882233
 ```
 
 4. Let’s go ahead and deploy the stack
@@ -41,8 +41,17 @@ pulumi config set cost-center 882233
 pulumi up
 ```
 
+[![asciicast](https://asciinema.org/a/355386.svg)](https://asciinema.org/a/355386)
+
 5. Cleanup
 ```sh
 pulumi destroy
 pulumi stack rm dev
 ```
+
+
+## TODO
+1. To create Azure Function
+2. To deploy APIM inside VNET
+3. To configure API endpoint, access policies, developer portal, and etc.
+4. Landing Zone - Refactor module into multi-stack

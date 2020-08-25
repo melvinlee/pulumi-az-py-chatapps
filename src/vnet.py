@@ -74,7 +74,7 @@ class VirtualNetwork:
                                   service_endpoints=["Microsoft.Storage"])
 
         # Associate subnet with nsg
-        network.SubnetNetworkSecurityGroupAssociation("NetworkSecurityGroupAssociation",
+        network.SubnetNetworkSecurityGroupAssociation("nsg-association",
                                                       subnet_id=frontend.id,
                                                       network_security_group_id=frontend_nsg.id)
 

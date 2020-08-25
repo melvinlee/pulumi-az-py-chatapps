@@ -46,10 +46,11 @@ my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.
 my_signalr = signalr.Service(signalr_name, rg.name, my_laworkspace.AnalyticsWorkspace.id, tags.get_tags())
 
 # Create Azure APIM
-my_apim = apim.ApiManagement(apim_name, rg.name, apim_config, tags.get_tags())
+# my_apim = apim.ApiManagement(apim_name, rg.name, apim_config, tags.get_tags())
 
 # Export Variables
 pulumi.export('website_url', "http://www." + zone_name)
 pulumi.export("signalr_connection_string", my_signalr.service.primary_connection_string)
 pulumi.export("signalr_public_port", my_signalr.service.public_port)
-pulumi.export("apim_url", my_apim.apimanagement.gateway_url)
+# pulumi.export("apim_url", my_apim.apimanagement.gateway_url)
+pulumi.export("static_website_url", my_website.account.primary_web_endpoint)
