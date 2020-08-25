@@ -11,13 +11,22 @@ class Service:
         service = signalr.Service(name,
                                   resource_group_name=resource_group_name,
                                   sku={
-                                      "name": "Standard_S1",
-                                      "capacity": 2,
+                                      "name": "Free_F1",
+                                      "capacity": 1,
                                   },
                                   features=[{
                                       "flag": "ServiceMode",
                                       "value": "Default",
-                                  }],
+                                  },
+                                      {
+                                      "flag": "EnableConnectivityLogs",
+                                      "value": "False"
+                                  },
+                                      {
+                                      "flag": "EnableMessagingLogs",
+                                      "value": "False"
+                                  }
+                                  ],
                                   tags=tags)
 
         # TODO: to add service endpoint and allow connection from backend subnet only
@@ -30,14 +39,26 @@ class Service:
                                                               "category": "AllLogs",
                                                               "enabled": "true",
                                                               "retention_policy": {
-                                                                  "enabled": False,
+                                                                  "days": 0,
+                                                                  "enabled": "false"
                                                               }
                                                           }],
                                                           metrics=[{
-                                                              "category": "Traffic",
+                                                              "category": "Errors",
+                                                              "enabled": "true",
                                                               "retention_policy": {
-                                                                  "enabled": False,
-                                                              },
-                                                          }])
+                                                                  "days": 0,
+                                                                  "enabled": "false"
+                                                              }
+                                                          },
+                                                              {
+                                                              "category": "Traffic",
+                                                              "enabled": "true",
+                                                              "retention_policy": {
+                                                                  "days": 0,
+                                                                  "enabled": "false"
+                                                              }
+                                                          }
+                                                          ])
 
         self.service = service
