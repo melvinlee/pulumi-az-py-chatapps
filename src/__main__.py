@@ -46,9 +46,9 @@ my_zone = zone.PublicDNS(zone_name, rg.name, my_pip.public_ip_id ,tags)
 my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id, my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, tags)
 
 # Create SignalR Services
-my_signalr = signalr.Service( signalr_name, rg.name, tags)
+my_signalr = signalr.Service( signalr_name, rg.name, my_laworkspace.AnalyticsWorkspace.id, tags)
 
 # Export Variables
 pulumi.export('website_url', "http://www." + zone_name)
-pulumi.export("signalr_connection_string", my_signalr.primary_connection_string)
-pulumi.export("signalr_public_port", my_signalr.public_port)
+pulumi.export("signalr_connection_string", my_signalr.service.primary_connection_string)
+pulumi.export("signalr_public_port", my_signalr.service.public_port)
