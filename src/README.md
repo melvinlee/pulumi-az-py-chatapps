@@ -49,6 +49,9 @@ pulumi up
 
 [![asciicast](https://asciinema.org/a/355386.svg)](https://asciinema.org/a/355386)
 
+Resources provisioned by Pulumi
+![](../Images/resources.png)
+
 6. Cleanup
 ```sh
 pulumi destroy
