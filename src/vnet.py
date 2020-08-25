@@ -4,8 +4,8 @@ from pulumi_azure import network
 class VirtualNetwork:
     """Create Azure VirtualNetwork"""
 
-    frontend_subnet_id = None
-    backend_subnet_id = None
+    frontend_subnet = None
+    backend_subnet = None
 
     def __init__(self, name, resource_group_name, cidr, subnet_frontend_cidr, subnet_backend_cidr, tags):
         vnet = network.VirtualNetwork(name,
@@ -86,5 +86,5 @@ class VirtualNetwork:
                                  address_prefixes=[subnet_backend_cidr])
 
         # Export Subnets Id
-        self.frontend_subnet_id = frontend.id
-        self.backend_subnet_id = backend.id
+        self.frontend_subnet = frontend
+        self.backend_subnet = backend
