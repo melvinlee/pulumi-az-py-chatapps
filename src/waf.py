@@ -1,10 +1,10 @@
-from pulumi_azure import network
+from pulumi_azure import network, monitoring
 
 
 class ApplicationGateway:
     """Create Azure ApplicationGateway"""
 
-    def __init__(self, name, resource_group_name, pip_id, subnet_frontend_id, subnet_backend_id, website_host, tags):
+    def __init__(self, name, resource_group_name, pip_id, subnet_frontend_id, subnet_backend_id, website_host, la_workspace_id, tags):
 
         web_backend_address_pool_name = name + "-web-beap"
         frontend_port_name = name + "feport"
@@ -30,8 +30,7 @@ class ApplicationGateway:
                                              "enabled": "true",
                                              "firewallMode": "Detection",
                                              "ruleSetVersion": "3.1"
-                                         }
-                                         ,
+                                         },
                                          frontend_ports=[{
                                              "name": frontend_port_name,
                                              "port": 80,
@@ -74,3 +73,31 @@ class ApplicationGateway:
                                              "backendAddressPoolName": web_backend_address_pool_name,
                                              "backendHttpSettingsName": web_backend_http_setting_name,
                                          }])
+
+        # Enabled diagnostic log and pipe it to la worksapce
+        diagnostic_setting = monitoring.DiagnosticSetting("waf-diagsetting",
+                                                          target_resource_id=waf.id,
+                                                          log_analytics_workspace_id=la_workspace_id,
+                                                          logs=[{
+                                                              "category": "ApplicationGatewayAccessLog",
+                                                              "enabled": "true",
+                                                              "retention_policy": {
+                                                                  "enabled": False,
+                                                              },
+                                                              "category": "ApplicationGatewayPerformanceLog",
+                                                              "enabled": "true",
+                                                              "retention_policy": {
+                                                                  "enabled": False,
+                                                              },
+                                                              "category": "ApplicationGatewayFirewallLog",
+                                                              "enabled": "true",
+                                                              "retention_policy": {
+                                                                  "enabled": False,
+                                                              },
+                                                          }],
+                                                          metrics=[{
+                                                              "category": "AllMetrics",
+                                                              "retention_policy": {
+                                                                  "enabled": False,
+                                                              },
+                                                          }])

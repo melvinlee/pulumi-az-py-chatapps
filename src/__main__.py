@@ -43,7 +43,7 @@ my_pip = pip.StandrdPublicIP(pip_name, rg.name, tags)
 my_zone = zone.PublicDNS(zone_name, rg.name, my_pip.public_ip_id ,tags)
 
 # Create Azure Application Gateway
-my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id, my_website.account.primary_web_host, tags)
+my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id, my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, tags)
 
 # Create SignalR Services
 my_signalr = signalr.Service( signalr_name, rg.name, tags)
