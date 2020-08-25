@@ -4,8 +4,7 @@ import pulumi
 class StaticWebsite:
     """Create Azure Blob Static Website"""
 
-    url = None
-    host = None
+    account = None
 
     def __init__(self, name, resource_group_name, tags):
 
@@ -31,6 +30,5 @@ class StaticWebsite:
 
         # TODO: create network_rules to block all traffic and only allow connection from waf to static website
 
-        # Export Static-Web Host and URL
-        self.url = account.primary_web_endpoint
-        self.host = account.primary_web_host
+        # Export account
+        self.account = account
