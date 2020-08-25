@@ -1,5 +1,5 @@
+import pulumi
 from pulumi_azure import network
-
 
 class VirtualNetwork:
     """Create Azure VirtualNetwork"""
@@ -7,11 +7,11 @@ class VirtualNetwork:
     frontend_subnet = None
     backend_subnet = None
 
-    def __init__(self, name, resource_group_name, cidr, subnet_frontend_cidr, subnet_backend_cidr, tags):
+    def __init__(self, name, resource_group_name, vnet_config, tags):
         vnet = network.VirtualNetwork(name,
                                       resource_group_name=resource_group_name,
                                       address_spaces=[
-                                          cidr
+                                          vnet_config.get("cidr")
                                       ],
                                       tags=tags)
 
@@ -70,7 +70,7 @@ class VirtualNetwork:
                                   name="frontend",
                                   resource_group_name=resource_group_name,
                                   virtual_network_name=vnet.name,
-                                  address_prefixes=[subnet_frontend_cidr],
+                                  address_prefixes=[vnet_config.get("subnet_frontend_cidr")],
                                   service_endpoints=["Microsoft.Storage"])
 
         # Associate subnet with nsg
@@ -83,7 +83,7 @@ class VirtualNetwork:
                                  name="backend",
                                  resource_group_name=resource_group_name,
                                  virtual_network_name=vnet.name,
-                                 address_prefixes=[subnet_backend_cidr])
+                                 address_prefixes=[vnet_config.get("subnet_backend_cidr")])
 
         # Export Subnets Id
         self.frontend_subnet = frontend
