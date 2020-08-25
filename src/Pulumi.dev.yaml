@@ -6,6 +6,7 @@ config:
     name: chatapps-apim
     publisher_email: chat@app.com
     publisher_name: app-developer
+  chatapp:cost-center: "882233"
   chatapp:la-name: chatapps-la
   chatapp:pip-name: chatapps-pip
   chatapp:resource-group-name: chatapps-rg

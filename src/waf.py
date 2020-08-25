@@ -72,7 +72,8 @@ class ApplicationGateway:
                                              "httpListenerName": listener_name,
                                              "backendAddressPoolName": web_backend_address_pool_name,
                                              "backendHttpSettingsName": web_backend_http_setting_name,
-                                         }])
+                                         }],
+                                         tags=tags)
 
         # Enabled diagnostic log and pipe it to la worksapce
         diagnostic_setting = monitoring.DiagnosticSetting("waf-diagsetting",
