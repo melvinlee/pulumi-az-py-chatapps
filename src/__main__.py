@@ -6,15 +6,18 @@ import base, storage, vnet, waf, signalr, zone, pip, monitoring, apim, tags
 # Read local config settings
 config = pulumi.Config()
 resource_group_name = config.require("resource-group-name")
-
-vnet_config = config.require_object("vnet")
-vnet_name = vnet_config.get("name")
-
+website_name = config.require("website-name")
 waf_name = config.require("waf-name")
 signalr_name = config.require("signalr-name")
 pip_name = config.require("pip-name")
 zone_name =  config.require("zone-name")
 la_name = config.require("la-name")
+
+# VNET config object
+vnet_config = config.require_object("vnet")
+vnet_name = vnet_config.get("name")
+
+# APIM config object
 apim_config = config.require_object("apim")
 apim_name = apim_config.get("name")
 
@@ -28,7 +31,7 @@ my_laworkspace = monitoring.AnalyticsWorkspace(la_name, rg.name, tags.get_tags()
 my_vnet = vnet.VirtualNetwork(vnet_name, rg.name, vnet_config, tags.get_tags())
 
 # Create Azure Blob Static Website
-my_website = storage.StaticWebsite('website',rg.name, tags.get_tags())
+my_website = storage.StaticWebsite(website_name,rg.name, tags.get_tags())
 
 # Create an Azure Standard Public IP
 my_pip = pip.StandrdPublicIP(pip_name, rg.name, tags.get_tags())
@@ -40,10 +43,10 @@ my_zone = zone.PublicDNS(zone_name, rg.name, my_pip.public_ip_id ,tags.get_tags(
 my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id, my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, tags.get_tags())
 
 # Create Azure SignalR Services
-my_signalr = signalr.Service( signalr_name, rg.name, my_laworkspace.AnalyticsWorkspace.id, tags.get_tags())
+my_signalr = signalr.Service(signalr_name, rg.name, my_laworkspace.AnalyticsWorkspace.id, tags.get_tags())
 
 # Create Azure APIM
-my_apim = apim.ApiManagement( apim_name, rg.name, apim_config, tags.get_tags())
+my_apim = apim.ApiManagement(apim_name, rg.name, apim_config, tags.get_tags())
 
 # Export Variables
 pulumi.export('website_url', "http://www." + zone_name)

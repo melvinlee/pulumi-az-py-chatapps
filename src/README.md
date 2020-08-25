@@ -20,6 +20,7 @@ pip3 install -r requirements.txt
 
 ```sh
 pulumi config set resource-group-name chatapps-rg
+pulumi config set website-name chatppswebsite
 pulumi config set zone-name app.com
 pulumi config set pip-name chatapps-pip
 pulumi config set --path 'vnet.name' chatapp-vnet
