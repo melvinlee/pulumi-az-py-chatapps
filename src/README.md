@@ -29,6 +29,10 @@ pulumi config set --path 'vnet.subnet_backend_cidr' 10.0.1.0/27
 pulumi config set waf-name chatapps-waf
 pulumi config set signalr-name chatapps-signalr
 pulumi config set la-name chatapps-la
+pulumi config set --path 'apim.name' chatapps-apim
+pulumi config set --path 'apim.publisher_name' app-developer
+pulumi config set --path 'apim.publisher_email' chat@app.com
+pulumi config set cost-center 882233 
 ```
 
 4. Let’s go ahead and deploy the stack

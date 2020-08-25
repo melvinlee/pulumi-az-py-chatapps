@@ -1,7 +1,7 @@
 """An Azure Python Pulumi program"""
 
 import pulumi
-import base, storage, vnet, waf, signalr, zone, pip, monitoring
+import base, storage, vnet, waf, signalr, zone, pip, monitoring, apim
 
 # Read local config settings
 config = pulumi.Config()
@@ -18,6 +18,8 @@ signalr_name = config.require("signalr-name")
 pip_name = config.require("pip-name")
 zone_name =  config.require("zone-name")
 la_name = config.require("la-name")
+apim_config = config.require_object("apim")
+apim_name = apim_config.get("name")
 
 tags = {
     "project" : "chatapps",
@@ -45,10 +47,14 @@ my_zone = zone.PublicDNS(zone_name, rg.name, my_pip.public_ip_id ,tags)
 # Create Azure Application Gateway
 my_waf = waf.ApplicationGateway(waf_name, rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id, my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, tags)
 
-# Create SignalR Services
+# Create Azure SignalR Services
 my_signalr = signalr.Service( signalr_name, rg.name, my_laworkspace.AnalyticsWorkspace.id, tags)
+
+# Create Azure APIM
+my_apim = apim.ApiManagement( apim_name, rg.name, apim_config, tags)
 
 # Export Variables
 pulumi.export('website_url', "http://www." + zone_name)
 pulumi.export("signalr_connection_string", my_signalr.service.primary_connection_string)
 pulumi.export("signalr_public_port", my_signalr.service.public_port)
+pulumi.export("apim_url", my_apim.apimanagement.gateway_url)
