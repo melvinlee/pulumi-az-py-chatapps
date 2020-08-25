@@ -80,17 +80,21 @@ class ApplicationGateway:
                                                           target_resource_id=waf.id,
                                                           log_analytics_workspace_id=la_workspace_id,
                                                           logs=[{
+                                                              "category": "ApplicationGatewayFirewallLog",
+                                                              "enabled": "true",
+                                                              "retention_policy": {
+                                                                  "enabled": False,
+                                                              }
+                                                          },
+                                                              {
                                                               "category": "ApplicationGatewayAccessLog",
                                                               "enabled": "true",
                                                               "retention_policy": {
                                                                   "enabled": False,
-                                                              },
+                                                              }
+                                                          },
+                                                              {
                                                               "category": "ApplicationGatewayPerformanceLog",
-                                                              "enabled": "true",
-                                                              "retention_policy": {
-                                                                  "enabled": False,
-                                                              },
-                                                              "category": "ApplicationGatewayFirewallLog",
                                                               "enabled": "true",
                                                               "retention_policy": {
                                                                   "enabled": False,
