@@ -16,7 +16,13 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-3. Setting Variables
+3. Setting Azure Location
+```sh
+pulumi config set azure:environment public
+pulumi config set azure:location SoutheastAsia
+```
+
+4. Setting Variables
 
 ```sh
 pulumi config set resource-group-name chatapps-rg
@@ -36,14 +42,14 @@ pulumi config set --path 'apim.publisher_email' chat@app.com
 pulumi config set cost-center 882233
 ```
 
-4. Let’s go ahead and deploy the stack
+5. Let’s go ahead and deploy the stack
 ```sh
 pulumi up
 ```
 
 [![asciicast](https://asciinema.org/a/355386.svg)](https://asciinema.org/a/355386)
 
-5. Cleanup
+6. Cleanup
 ```sh
 pulumi destroy
 pulumi stack rm dev
