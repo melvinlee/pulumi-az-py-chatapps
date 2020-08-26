@@ -26,10 +26,10 @@ pulumi config set azure:location SoutheastAsia
 
 ```sh
 pulumi config set resource-group-name chatapps-rg
-pulumi config set website-name chatppswebsite
+pulumi config set website-name chatappswebsite
 pulumi config set zone-name app.com
 pulumi config set pip-name chatapps-pip
-pulumi config set --path 'vnet.name' chatapp-vnet
+pulumi config set --path 'vnet.name' chatapps-vnet
 pulumi config set --path 'vnet.cidr' 10.0.0.0/16
 pulumi config set --path 'vnet.subnet_frontend_cidr' 10.0.0.0/27
 pulumi config set --path 'vnet.subnet_backend_cidr' 10.0.1.0/27
