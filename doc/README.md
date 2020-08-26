@@ -58,3 +58,4 @@
 - Azure Function B to send messages to connected client
 6. `Azure SignalR Services`
 7. `Azure Monitor` for Azure resources and application monitoring
+8. `Azure AD B2C` for authenticate users with external identities provider such as Facebook, Google and etc.
