@@ -39,7 +39,7 @@ if [ "$1" = "storage" ];then
 
     echo 
     echo "Creating state container..." 
-    key1=$(az storage account keys list -g $AZURE_RESOURCEGROUP -n $AZURE_STORAGE_ACCOUNT | grep key1 | awk '{print $3}')
+    key1=$(az storage account keys list -g $AZURE_RESOURCEGROUP -n $AZURE_STORAGE_ACCOUNT --output table | grep key1 | awk '{print $3}')
     az storage container create --name "statescontainer" \
         --account-name $AZURE_STORAGE_ACCOUNT \
         --account-key $key1 \
