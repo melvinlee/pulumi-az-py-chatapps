@@ -7,7 +7,7 @@ import vnet
 import waf
 import signalr
 import zone
-import pip
+import public_ip
 import monitoring
 import apim
 import tags
@@ -35,7 +35,7 @@ my_tags = tags.Tags({"purpose": "demo"})
 
 # Create an Azure Resource Group
 my_rg = base.ResourceGroup(name=resource_group_name,
-                            tags=my_tags.get_tags())
+                           tags=my_tags.get_tags())
 
 # Create an Azure Loganalytics Workspace
 my_laworkspace = monitoring.AnalyticsWorkspace(name=la_name,
@@ -44,7 +44,8 @@ my_laworkspace = monitoring.AnalyticsWorkspace(name=la_name,
                                                tags=my_tags.get_tags())
 
 # Create a VirtualNetwork
-my_vnet = vnet.VirtualNetwork(vnet_name, my_rg.name, vnet_config, my_tags.get_tags())
+my_vnet = vnet.VirtualNetwork(
+    vnet_name, my_rg.name, vnet_config, my_tags.get_tags())
 
 # Create Azure Blob Static Website
 my_website = storage.StaticWebsite(name=website_name,
@@ -57,20 +58,25 @@ my_website = storage.StaticWebsite(name=website_name,
                                    tags=my_tags.get_tags({"network_rules": "yes"}))
 
 # Create an Azure Standard Public IP
-my_pip = pip.StandrdPublicIP(pip_name, my_rg.name, my_tags.get_tags())
+my_pip = public_ip.StandrdPublicIP(name=pip_name,
+                                   resource_group_name=my_rg.name,
+                                   tags=my_tags.get_tags())
 
 # Create a Public Zone
 my_zone = zone.PublicDNS(
-    zone_name, my_rg.name, my_pip.public_ip_id, my_tags.get_tags())
+    zone_name, my_rg.name, my_pip.public_ip.id, my_tags.get_tags())
 
 # Create Azure Application Gateway
-my_waf = waf.ApplicationGateway(waf_name, my_rg.name, my_pip.public_ip_id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id, my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, my_tags.get_tags())
+my_waf = waf.ApplicationGateway(waf_name, my_rg.name, my_pip.public_ip.id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id,
+                                my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, my_tags.get_tags())
 
 # Create Azure SignalR Services
-my_signalr = signalr.Service(signalr_name, my_rg.name, my_laworkspace.AnalyticsWorkspace.id, my_tags.get_tags())
+my_signalr = signalr.Service(
+    signalr_name, my_rg.name, my_laworkspace.AnalyticsWorkspace.id, my_tags.get_tags())
 
 # Create Azure APIM
-my_apim = apim.ApiManagement(apim_name, my_rg.name, apim_config, my_tags.get_tags())
+my_apim = apim.ApiManagement(
+    apim_name, my_rg.name, apim_config, my_tags.get_tags())
 
 # Export Variables
 pulumi.export('website_url', "http://www." + zone_name)
