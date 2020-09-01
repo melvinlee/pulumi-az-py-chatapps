@@ -3,7 +3,6 @@ import pulumi
 
 
 class StaticWebsite:
-
     """
     Create Azure Blob Static Website
 
@@ -43,7 +42,7 @@ class StaticWebsite:
           * `virtual_network_subnet_ids` (`pulumi.Input[list]`) - A list of resource ids for subnets.
         """
 
-        account = storage.Account(name,
+        __account = storage.Account(name,
                                   resource_group_name=resource_group_name,
                                   account_tier="Standard",
                                   account_kind="StorageV2",
@@ -54,18 +53,28 @@ class StaticWebsite:
                                   },
                                   network_rules=network_rules,
                                   enable_https_traffic_only=True,
-                                  tags=tags,
+                                  tags=self.__get_tags(tags),
                                   opts=opts)
 
         if index_html is not None:
             storage.Blob("index.html",
                          name="index.html",
                          content_type="text/html",
-                         storage_account_name=account.name,
+                         storage_account_name=__account.name,
                          storage_container_name="$web",
                          type="Block",
                          source=pulumi.FileAsset(index_html),
                          opts=opts)
 
         # Export account
-        self.account = account
+        self.account = __account
+
+    def __get_tags(self, tags):
+        if tags is not None:
+            __tags = dict(tags)
+        else: 
+            __tags = dict()
+
+        __tags["moduleName"] = __name__
+
+        return __tags
