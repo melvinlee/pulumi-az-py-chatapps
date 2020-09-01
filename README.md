@@ -1,3 +1,8 @@
+# Introduction
+
+What is Pulumi
+> Pulumi is a multi-language and multi-cloud development platform. It lets you create all aspects of cloud programs using real languages and real code, from infrastructure on up to the application itself. Just write programs and run them, and Pulumi figures out the rest.
+
 ## Quick Start
 
 Using Azure Blob for saving pulumi states
