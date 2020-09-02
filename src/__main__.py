@@ -44,8 +44,67 @@ my_laworkspace = monitoring.AnalyticsWorkspace(name=la_name,
                                                tags=my_tags.get_tags())
 
 # Create a VirtualNetwork
-my_vnet = vnet.VirtualNetwork(
-    vnet_name, my_rg.name, vnet_config, my_tags.get_tags())
+my_vnet = vnet.VirtualNetwork(name=vnet_name,
+                              resource_group_name=my_rg.name,
+                              cidr = [vnet_config.get("cidr")],
+                              subnets={
+                                  "subnets": [{
+                                      "name": "frontend-sub",
+                                      "address_prefixes": [vnet_config.get("subnet_frontend_cidr")],
+                                      "service_endpoints": ["Microsoft.Storage"],
+                                      "nsg_security_rules": [
+                                          {
+                                              "name": "AllowGWM",
+                                              "priority": 100,
+                                              "direction": "Inbound",
+                                              "access": "Allow",
+                                              "protocol": "Tcp",
+                                              "source_port_range": "*",
+                                              "destination_port_range": "65200-65535",
+                                              "source_address_prefix": "GatewayManager",
+                                              "destination_address_prefix": "*",
+                                          },
+                                          {
+                                              "name": "AllowAzureLoadBalancer",
+                                              "priority": 101,
+                                              "direction": "Inbound",
+                                              "access": "Allow",
+                                              "protocol": "Tcp",
+                                              "source_port_range": "*",
+                                              "destination_port_range": "*",
+                                              "source_address_prefix": "AzureLoadBalancer",
+                                              "destination_address_prefix": "*",
+                                          },
+                                          {
+                                              "name": "AllowHttp",
+                                              "priority": 200,
+                                              "direction": "Inbound",
+                                              "access": "Allow",
+                                              "protocol": "Tcp",
+                                              "source_port_range": "*",
+                                              "destination_port_range": "80",
+                                              "source_address_prefix": "*",
+                                              "destination_address_prefix": "*",
+                                          },
+                                          {
+                                              "name": "AllowHttps",
+                                              "priority": 201,
+                                              "direction": "Inbound",
+                                              "access": "Allow",
+                                              "protocol": "Tcp",
+                                              "source_port_range": "*",
+                                              "destination_port_range": "443",
+                                              "source_address_prefix": "*",
+                                              "destination_address_prefix": "*",
+                                          }
+                                      ]
+                                  },
+                                      {
+                                      "name": "backend-sub",
+                                      "address_prefixes": [vnet_config.get("subnet_backend_cidr")],
+                                  }]
+                              },
+                              tags=my_tags.get_tags())
 
 # Create Azure Blob Static Website
 my_website = storage.StaticWebsite(name=website_name,
@@ -53,7 +112,7 @@ my_website = storage.StaticWebsite(name=website_name,
                                    index_html="wwwroot/index.html",
                                    network_rules={
                                        "default_action": "Allow",
-                                       "virtual_network_subnet_ids": [my_vnet.frontend_subnet.id]
+                                       "virtual_network_subnet_ids": [my_vnet.subnets["frontend-sub"].id]
                                    },
                                    tags=my_tags.get_tags({"network_rules": "yes"}))
 
@@ -67,7 +126,7 @@ my_zone = zone.PublicDNS(
     zone_name, my_rg.name, my_pip.public_ip.id, my_tags.get_tags())
 
 # Create Azure Application Gateway
-my_waf = waf.ApplicationGateway(waf_name, my_rg.name, my_pip.public_ip.id, my_vnet.frontend_subnet.id, my_vnet.backend_subnet.id,
+my_waf = waf.ApplicationGateway(waf_name, my_rg.name, my_pip.public_ip.id, my_vnet.subnets["frontend-sub"].id, my_vnet.subnets["backend-sub"].id,
                                 my_website.account.primary_web_host, my_laworkspace.AnalyticsWorkspace.id, my_tags.get_tags())
 
 # Create Azure SignalR Services
