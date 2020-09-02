@@ -22,8 +22,6 @@ class StaticWebsite:
     ```
     """
 
-    account = None
-
     def __init__(self, name: str, resource_group_name: str, index_html: str = None, network_rules=None, tags: dict = None, opts: pulumi.ResourceOptions = None):
         """
         :param resource_name: The name of the resource.
