@@ -18,8 +18,6 @@ class AnalyticsWorkspace:
     ```
      """   
 
-    AnalyticsWorkspace = None
-
     def __init__(self, name: str, resource_group_name: str, sku: str = "PerGB2018", retention_in_days: int = 30, tags: dict = None, opts: pulumi.ResourceOptions = None):
         """
         :param name: The name of the resource.
@@ -30,12 +28,15 @@ class AnalyticsWorkspace:
         :param opts: Options for the resource.
         """
 
-        self.AnalyticsWorkspace = operationalinsights.AnalyticsWorkspace(name,
+        self.__analyticsWorkspace = operationalinsights.AnalyticsWorkspace(name,
                                                                          resource_group_name=resource_group_name,
                                                                          sku=sku,
                                                                          retention_in_days=retention_in_days,
                                                                          tags=self.__get_tags(tags),
                                                                          opts=opts)
+    @property
+    def AnalyticsWorkspace(self):
+        return self.__analyticsWorkspace
 
     def __get_tags(self, tags):
         if tags is not None:
