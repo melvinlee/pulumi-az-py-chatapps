@@ -50,7 +50,7 @@ class VirtualNetwork:
         :param opts: Options for the resource.
         """
 
-        self.subnets: dict = dict()
+        self.__subnets: dict = dict()
 
         __vnet = network.VirtualNetwork(name,
                                         resource_group_name=resource_group_name,
@@ -89,7 +89,11 @@ class VirtualNetwork:
                                                           subnet_id=__subnet.id,
                                                           network_security_group_id=__nsg.id,)
 
-            self.subnets[subnet["name"]] = __subnet
+            self.__subnets[subnet["name"]] = __subnet
+
+    @property
+    def subnets(self) -> dict:
+        return self.__subnets 
 
     def __get_tags(self, tags):
         if tags is not None:
