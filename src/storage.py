@@ -40,7 +40,7 @@ class StaticWebsite:
           * `virtual_network_subnet_ids` (`pulumi.Input[list]`) - A list of resource ids for subnets.
         """
 
-        __account = storage.Account(name,
+        self.__account = storage.Account(name,
                                   resource_group_name=resource_group_name,
                                   account_tier="Standard",
                                   account_kind="StorageV2",
@@ -58,14 +58,15 @@ class StaticWebsite:
             storage.Blob("index.html",
                          name="index.html",
                          content_type="text/html",
-                         storage_account_name=__account.name,
+                         storage_account_name=self.__account.name,
                          storage_container_name="$web",
                          type="Block",
                          source=pulumi.FileAsset(index_html),
                          opts=opts)
 
-        # Export account
-        self.account = __account
+    @property
+    def account(self):
+        return self.__account 
 
     def __get_tags(self, tags):
         if tags is not None:
