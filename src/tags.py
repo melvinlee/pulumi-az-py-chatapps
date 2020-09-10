@@ -18,19 +18,19 @@ class Tags:
     def __init__(self, tags: dict = None):
         config = pulumi.Config()
         
-        self.tags = {
+        self.__tags = {
             'project': pulumi.get_project(),
             'stack': pulumi.get_stack(),
             'costCenter': config.require('cost-center')
         }
 
         if tags is not None:
-            self.tags.update(tags)
+            self.__tags.update(tags)
 
     def get_tags(self, tags: dict = None) -> dict:
 
         if tags is not None:
-            tags.update(self.tags)
+            tags.update(self.__tags)
             return tags
             
-        return self.tags
+        return self.__tags
