@@ -46,7 +46,7 @@ my_laworkspace = monitoring.AnalyticsWorkspace(name=la_name,
 # Create a VirtualNetwork
 my_vnet = vnet.VirtualNetwork(name=vnet_name,
                               resource_group_name=my_rg.name,
-                              cidr = [vnet_config.get("cidr")],
+                              cidr=[vnet_config.get("cidr")],
                               subnets={
                                   "subnets": [{
                                       "name": "frontend-sub",
@@ -114,7 +114,10 @@ my_website = storage.StaticWebsite(name=website_name,
                                        "default_action": "Allow",
                                        "virtual_network_subnet_ids": [my_vnet.subnets["frontend-sub"].id]
                                    },
-                                   tags=my_tags.get_tags({"network_rules": "yes"}))
+                                   tags=my_tags.get_tags({
+                                       "network_rules": "yes",
+                                       "network_subnet_id": my_vnet.subnets["frontend-sub"].id,
+                                       }))
 
 # Create an Azure Standard Public IP
 my_pip = public_ip.StandrdPublicIP(name=pip_name,
@@ -122,8 +125,22 @@ my_pip = public_ip.StandrdPublicIP(name=pip_name,
                                    tags=my_tags.get_tags())
 
 # Create a Public Zone
-my_zone = zone.PublicDNS(
-    zone_name, my_rg.name, my_pip.public_ip.id, my_tags.get_tags())
+my_zone = zone.PublicDNS(name=zone_name,
+                         resource_group_name=my_rg.name,
+                         recordsets=[
+                         {
+                            "name": "www",
+                            "record_type": "A",
+                            "ttl" : 300,
+                            "target_resource_id": my_pip.public_ip.id
+                         },
+                         {
+                            "name": "api",
+                            "record_type": "CName",
+                            "ttl" : 300,
+                            "record": "contoso.com"
+                         }],
+                         tags=my_tags.get_tags())
 
 # Create Azure Application Gateway
 my_waf = waf.ApplicationGateway(waf_name, my_rg.name, my_pip.public_ip.id, my_vnet.subnets["frontend-sub"].id, my_vnet.subnets["backend-sub"].id,
@@ -139,7 +156,8 @@ my_apim = apim.ApiManagement(
 
 # Export Variables
 pulumi.export('website_url', "http://www." + zone_name)
-pulumi.export("signalr_connection_string", my_signalr.service.primary_connection_string)
+pulumi.export("signalr_connection_string",
+              my_signalr.service.primary_connection_string)
 pulumi.export("signalr_public_port", my_signalr.service.public_port)
 pulumi.export("apim_url", my_apim.apimanagement.gateway_url)
 pulumi.export("static_website_url", my_website.account.primary_web_endpoint)
