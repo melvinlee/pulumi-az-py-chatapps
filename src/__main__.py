@@ -1,16 +1,16 @@
 """An Azure Python Pulumi program"""
 
 import pulumi
-import base
-import storage
-import vnet
+from modules import base
+from modules import storage
+from modules import vnet
+from modules import signalr
+from modules import zone
+from modules import public_ip
+from modules import monitoring
+from modules import apim
+from modules import tags
 import waf
-import signalr
-import zone
-import public_ip
-import monitoring
-import apim
-import tags
 
 # Read local config settings
 config = pulumi.Config()
