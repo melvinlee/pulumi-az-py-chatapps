@@ -33,6 +33,8 @@ class Signalr:
         self.__diag_logs = None
         self.__diag_metrics = None
 
+        self.tags = tags
+        
         self.__service = signalr.Service(name,
                                          resource_group_name=resource_group_name,
                                          sku=sku,
@@ -49,7 +51,7 @@ class Signalr:
                                              "value": "False"
                                          }
                                          ],
-                                         tags=tags,
+                                         tags=self.tags,
                                          opts=opts)
 
         # TODO: to add service endpoint and allow connection from backend subnet only
