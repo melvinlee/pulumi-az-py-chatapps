@@ -117,6 +117,7 @@ my_website = storage.StaticWebsite(name=website_name,
                                    tags=my_tags.get_tags({
                                        "network_rules": "yes",
                                        "network_subnet_id": my_vnet.subnets["frontend-sub"].id,
+                                       "data_classification": "public"
                                    }))
 
 # Create an Azure Standard Public IP
