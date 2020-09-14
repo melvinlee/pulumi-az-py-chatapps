@@ -39,13 +39,13 @@ my_rg = base.ResourceGroup(name=resource_group_name,
 
 # Create an Azure Loganalytics Workspace
 my_laworkspace = monitoring.AnalyticsWorkspace(name=la_name,
-                                               resource_group_name=my_rg.name,
+                                               resource_group_name=my_rg.resource_group.name,
                                                retention_in_days=35,
                                                tags=my_tags.get_tags())
 
 # Create a VirtualNetwork
 my_vnet = vnet.VirtualNetwork(name=vnet_name,
-                              resource_group_name=my_rg.name,
+                              resource_group_name=my_rg.resource_group.name,
                               cidr=[vnet_config.get("cidr")],
                               subnets={
                                   "subnets": [{
@@ -108,7 +108,7 @@ my_vnet = vnet.VirtualNetwork(name=vnet_name,
 
 # Create Azure Blob Static Website
 my_website = storage.StaticWebsite(name=website_name,
-                                   resource_group_name=my_rg.name,
+                                   resource_group_name=my_rg.resource_group.name,
                                    index_html="wwwroot/index.html",
                                    network_rules={
                                        "default_action": "Allow",
@@ -122,12 +122,12 @@ my_website = storage.StaticWebsite(name=website_name,
 
 # Create an Azure Standard Public IP
 my_pip = public_ip.StandrdPublicIP(name=pip_name,
-                                   resource_group_name=my_rg.name,
+                                   resource_group_name=my_rg.resource_group.name,
                                    tags=my_tags.get_tags())
 
 # Create a Public Zone
 my_zone = zone.PublicDNS(name=zone_name,
-                         resource_group_name=my_rg.name,
+                         resource_group_name=my_rg.resource_group.name,
                          recordsets=[
                              {
                                  "name": "www",
@@ -145,7 +145,7 @@ my_zone = zone.PublicDNS(name=zone_name,
 
 # Create Azure Application Gateway
 my_waf = waf.ApplicationGateway(name=waf_name,
-                                resource_group_name=my_rg.name,
+                                resource_group_name=my_rg.resource_group.name,
                                 pip_id=my_pip.public_ip.id,
                                 subnet_frontend_id=my_vnet.subnets["frontend-sub"].id,
                                 subnet_backend_id=my_vnet.subnets["backend-sub"].id,
@@ -155,7 +155,7 @@ my_waf = waf.ApplicationGateway(name=waf_name,
 
 # Create Azure SignalR Services
 my_signalr = signalr.Signalr(name=signalr_name,
-                             resource_group_name=my_rg.name,
+                             resource_group_name=my_rg.resource_group.name,
                              sku={
                                  "name": "Free_F1",
                                  "capacity": 1,
@@ -167,7 +167,7 @@ my_signalr = signalr.Signalr(name=signalr_name,
 
 # Create Azure APIM
 my_apim = apim.ApiManagement(name=apim_name,
-                             resource_group_name=my_rg.name,
+                             resource_group_name=my_rg.resource_group.name,
                              apim_config=apim_config,
                              tags=my_tags.get_tags())
 
